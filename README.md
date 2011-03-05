@@ -13,19 +13,23 @@ Examples
 
 Simple example usage:
 
-`$(function() {
+`
+$(function() {
   $.weatherizr("60647");
-});`
+});
+`
 
 The weatherizr plugin returns a [jQuery Deferred object](http://api.jquery.com/category/deferred-object/) (introduced in jQuery 1.5). This Deferred object can be used to later have access to the full weather data object. The weather data object becomes available once the ajax request has finished loading. 
 
 This Deferred object allows for the following to work:
 
-`$(function() {
+`
+$(function() {
   $.weatherizr("60647").done(function(weather) {
     console.log(weather);
   });
-});`
+});
+`
 
 Possible class names
 --------------------
