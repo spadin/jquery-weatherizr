@@ -2,20 +2,42 @@
 <head>
   <meta charset=utf-8>
   <title>jQuery Weatherizr - Simple Example</title>
+  <link rel="stylesheet" href="stylesheets/example.css" type="text/css">
   <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.5.1/jquery.min.js" type="text/javascript"></script>
   <script src="../javascripts/jquery.weatherizr.js" type="text/javascript"></script>
   <script type="text/javascript" charset="utf-8">
     $(function() {
       $.weatherizr("60647").done(function(weather) {
+        $('<div class="current"/>').appendTo("#more");
+        $('<h2/>').text("Current Conditions").appendTo("#more .current");
+        $('<div/>').html("Conditions: " + weather.current.condition).appendTo("#more .current");
+        $('<div/>').html("Temp: " + weather.current.temperature.fahrenheit + "&deg;F").appendTo("#more .current");
+        $('<div/>').text("Wind: " + weather.current.wind).appendTo("#more .current");
+        
+        $('<div class="forecast"/>').appendTo("#more");
+        $('<h2/>').text("Forecast").appendTo("#more .forecast");
         $.each(weather.forecast, function(k,forecast) {
-          $('#items').append('<li>'+forecast.high+'/'+forecast.low+' - '+forecast.day+'</li>');
+          $('<div/>').text(forecast.day).appendTo("#more .forecast");
+          $('<div/>').html("High: " + forecast.high + "&deg;F, Low: " + forecast.low + "&deg;F").appendTo("#more .forecast");
         });
       });
     });
   </script>
+  <style type="text/css" media="screen">
+    body {
+      font: 24px "Trebuchet MS", Verdana, sans-serif;
+      color: #007CC2;
+    }
+    #more {
+      max-width: 1280px;
+      margin: 0 auto;
+      padding-left: 100px;
+    }
+  </style>
 </head>
 <body>
-  <ul id="items">
-  </ul>
+  <div id="more">
+    <h1>Chicago, IL (60647)</h1>
+  </div>
 </body>
 </html>
