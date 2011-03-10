@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <title>jQuery Weatherizr - Test Runner</title>
+  <link rel="stylesheet" href="http://code.jquery.com/qunit/git/qunit.css" type="text/css">
+  <script src="http://code.jquery.com/jquery-latest.js"></script>
+  <script src="http://code.jquery.com/qunit/git/qunit.js" type="text/javascript" charset="utf-8"></script>
+  <script src="../javascripts/jquery.weatherizr.js" type="text/javascript" charset="utf-8"></script>
+  <script type="text/javascript" charset="utf-8">
+  $(function() {
+    module("test promise object returned upon initialization");
+    test("check via zipcode", 7, function() {
+      var weather_promise = $.weatherizr("60647");
+      
+      ok(weather_promise != null, "not null");
+      ok(typeof(weather_promise.done) == "function", "done function");
+      ok(typeof(weather_promise.fail) == "function", "fail function");
+      ok(typeof(weather_promise.isRejected) == "function", "isRejected function");
+      ok(typeof(weather_promise.isResolved) == "function", "isResolved function");
+      ok(typeof(weather_promise.promise) == "function", "promise function");
+      ok(typeof(weather_promise.then) == "function", "then function");
+    });
+    test("check via city name", 7, function() {
+      var weather_promise = $.weatherizr("Chicago, IL");
+      
+      ok(weather_promise != null, "not null");
+      ok(typeof(weather_promise.done) == "function", "done function");
+      ok(typeof(weather_promise.fail) == "function", "fail function");
+      ok(typeof(weather_promise.isRejected) == "function", "isRejected function");
+      ok(typeof(weather_promise.isResolved) == "function", "isResolved function");
+      ok(typeof(weather_promise.promise) == "function", "promise function");
+      ok(typeof(weather_promise.then) == "function", "then function");
+    });
+    
+    module("weather object");
+    asyncTest("test weather object returned when done", function() {
+      $.weatherizr("60647").done(function(weather) {
+        ok(weather != null, "not null");
+        ok(typeof(weather.current) == "object", "current object");
+        ok(weather.forecast.length, "forecast array");
+        console.log(weather.current.temperature.c);
+        start();
+      });
+    });
+  });
+  </script>
+</head>
+<body>
+  <h1 id="qunit-header">jQuery Weatherizr QUnit Test Runner</h1>
+  <h2 id="qunit-banner"></h2>
+  <div id="qunit-testrunner-toolbar"></div>
+  <h2 id="qunit-userAgent"></h2>
+  <ol id="qunit-tests"></ol>
+</body>
+</html>
