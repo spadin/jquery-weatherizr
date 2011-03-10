@@ -4,37 +4,38 @@
   });
   
   function Weatherizr(location) {
-    var weather_url = "http://www.google.com/ig/api?weather=";
+    var weather_url = "http://pipes.yahoo.com/pipes/pipe.run?_id=dd8dd58983068f8a245d69afd8946443&_render=json&location=";
     var weather_jqxhr = $.get(weather_url + escape(location));
     var deferred = jQuery.Deferred();
     weather_jqxhr.success(function(data) {
-      var condition_code = $(data).find("current_conditions condition").attr("data");
+      console.log(data);
+      var condition_code = data.value.items[0].current_conditions.condition.data;
       condition_code = condition_code.toLowerCase().replace(/\s/g,'_');
       $("body").addClass(condition_code);
       
       var weather = {
         current: {
           code: condition_code,
-          condition: $(data).find("current_conditions condition").attr("data"),
+          condition: data.value.items[0].current_conditions.condition.data,
           temperature: {
-            fahrenheit: $(data).find("current_conditions temp_f").attr("data"),
-            celcius: $(data).find("current_conditions temp_c").attr("data")
+            fahrenheit: data.value.items[0].current_conditions.temp_f.data,
+            celcius: data.value.items[0].current_conditions.temp_f.data
           },
-          humidity: $(data).find("current_conditions humidity").attr("data"),
-          icon: "http://google.com"+$(data).find("current_conditions icon").attr("data"),
-          wind: $(data).find("current_conditions wind_condition").attr("data").replace(/Wind: /g,'')
+          humidity: data.value.items[0].current_conditions.icon.data,
+          icon: "http://google.com"+data.value.items[0].current_conditions.icon.data,
+          wind: data.value.items[0].current_conditions.wind_condition.data.replace(/Wind: /g,'')
         },
         forecast: []
       };
-      $(data).find("forecast_conditions").each(function(k,forecast) {
+      $.each(data.value.items[0].forecast_conditions, function(k,forecast) {
         weather.forecast.push({
-          day: $(forecast).find("day_of_week").attr("data"),
-          low: $(forecast).find("low").attr("data"),
-          high: $(forecast).find("high").attr("data"),
-          icon: "http://google.com"+$(forecast).find("icon").attr("data"),
-          condition: $(forecast).find("condition").attr("data")
+          day: forecast.day_of_week.data,
+          low: forecast.low.data,
+          high: forecast.high.data,
+          icon: "http://google.com"+forecast.icon.data,
+          condition: forecast.condition.data
         });
-      });
+      });      
       deferred.resolve(weather);
     });
     return deferred.promise();
